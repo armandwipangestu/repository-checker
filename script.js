@@ -35,7 +35,7 @@ $('.search-button').on('click', function () {
                     results.forEach(r => {
                         repos += showRepos(r);
                     });
-                    $('.repo-container').html(repos);
+                    $('.show-card').html(repos);
 
                     // Ketika tombil show details di klik
                     $('.modal-detail-button').on('click', function () {
@@ -82,7 +82,7 @@ $('.search-button').on('click', function () {
 
 function showAuthor(author) {
     return `
-        <p>Create by <a href="${author.html_url}" style="text-decoration: none">${author.name}</a> made with <i class="fas fa-heart text-danger"></i>
+        <p>Created by <a href="${author.html_url}" style="text-decoration: none">${author.name}</a> made with <i class="fas fa-heart text-danger"></i>
     `;
 }
 
@@ -93,12 +93,12 @@ function showUser(user) {
         <h4 class="text-muted">${user.name}</h4>
         <p class="lead">${user.bio ? `${user.bio}` : 'No Bio'}</p>
         <p>
-            <i class="fas fa-heart text-danger me-2"> <span class="text-white">${user.followers} Followers</span></i>
-            <i class="fas fa-user-friends text-primary me-2"> <span class="text-white">${user.following} Following</span></i>
-            <i class="fas fa-folder-open text-warning me-2"> <span class="text-white">${user.public_repos} Public Repository</span></i>
+            <i class="fas fa-heart text-danger me-1"></i> <span class="text-white me-2">${user.followers} Followers</span>
+            <i class="fas fa-user-friends text-primary me-1"></i> <span class="text-white me-2">${user.following} Following</span>
+            <i class="fas fa-folder-open text-warning me-1"></i> <span class="text-white">${user.public_repos} Public Repository</span>
         </p>
         <div class="readme mb-4">
-            <a href="https://github-readme-stats.vercel.app/api?username=${user.login}&amp;count_private=true&amp;show_icons=true&amp;include_all_commits=true&amp;theme=dracula" target="_blank" rel="noopener"><img class="img-fluid" src="https://github-readme-stats.vercel.app/api?username=${user.login}&amp;count_private=true&amp;show_icons=true&amp;include_all_commits=true&amp;theme=dracula" alt="GitHub Stats" /></a><br>
+            <a href="https://github-readme-stats.vercel.app/api?username=${user.login}&amp;count_private=true&amp;show_icons=true&amp;include_all_commits=true&amp;theme=dracula" class="me-2" target="_blank" rel="noopener"><img class="img-fluid" src="https://github-readme-stats.vercel.app/api?username=${user.login}&amp;count_private=true&amp;show_icons=true&amp;include_all_commits=true&amp;theme=dracula" alt="GitHub Stats" /></a>
             <a href="https://github-readme-stats.vercel.app/api/top-langs/?username=${user.login}&amp;layout=compact&amp;theme=dracula" target="_blank" rel="noopener"><img class="img-fluid mt-4" src="https://github-readme-stats.vercel.app/api/top-langs/?username=${user.login}&amp;layout=compact&amp;theme=dracula" alt="GitHub Most Used Language" /></a>
         </div>
     `;
@@ -106,23 +106,28 @@ function showUser(user) {
 
 function showRepos(repos) {
     return `
-        <div class="col-md-4 my-3">
-          <div class="card-group">
-            <div class="card text-dark bg-white" style="width: 18rem;">
-               <div class="gambar">
-                   ${showOGio(repos.full_name)}
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title"><i class="fas fa-folder-open me-1 mb-2 text-dark"></i>${repos.full_name}</h5> 
-                    <span class="text-right"><strong><i class="fas fa-code-branch me-1 text-dark"></i> ${repos.forks_count}</strong></span> 
-                    <span class="text-right"><strong><i class="fas fa-star me-1" style="color: #ebbc21;"></i> ${repos.stargazers_count}</strong></span>
-                    <span class="text-right ms-1"><img src="https://badges.pufler.dev/visits/${repos.full_name}?"/></span>
-                    <p class="card-subtitle mb-2 mt-2"><i class="fas fa-bookmark text-dark me-1"></i>${repos.description ? `${repos.description}` : 'No Description'}</p>
-                    <a href="#" class="btn btn-primary modal-detail-button" data-bs-toggle="modal" data-bs-target="#repoDetailModal" data-repo="${repos.full_name}">Show Details <i class="fas fa-sign-in-alt ms-1"></i></a>
-                </div>
-            </div>
+      <div class="col">
+        <div class="card h-100 text-dark bg-white">
+          <!--<div class="gambar">
+            ${showOGio(repos.full_name)}
+          </div>-->
+          ${showOGio(repos.full_name)}
+          <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-folder-open me-1 mb-2 text-dark"></i>${repos.full_name}</h5> 
+            <span><strong><i class="fas fa-code-branch me-1 text-dark"></i> ${repos.forks_count}</strong></span> 
+            <span><strong><i class="fas fa-star" style="color: #ebbc21;"></i> ${repos.stargazers_count}</strong></span>
+            <img class="ms-2" src="https://badges.pufler.dev/visits/${repos.full_name}?"/>
+            <p class="card-text mb-2 mt-2"><i class="fas fa-bookmark text-dark me-1"></i>${repos.description ? `${repos.description}` : 'No Description'}</p>
+          </div>
+          <div class="card-footer text-end">
+            <a href="#" class="btn btn-primary modal-detail-button" data-bs-toggle="modal" data-bs-target="#repoDetailModal" data-repo="${repos.full_name}">
+              Show Details 
+              <!--<i class="fas fa-eye ms-1"></i>-->
+              <i class="fas fa-sign-in-alt ms-1"></i>
+            </a>
           </div>
         </div>
+      </div>
     `;
 }
 
@@ -132,9 +137,9 @@ function showOGio(userRepo) {
         // url: "https://opengraph.io/api/1.1/site/https%3A%2F%2Fwww.github.com%2Fxshin404%2FmyTermux\?accept_lang\=auto\&app_id\=3fe266f9-a6f8-4484-a8cf-eda88fe9495e",
         url: `https://opengraph.io/api/1.1/site/${encodeURLCompRepo}?app_id=${ogIoApiKey}`,
         success: results => {
-            const image = `<a href="${results.openGraph.image.url}" target="_blank" rel="noopener"><img src="${results.openGraph.image.url}" class="img-fluid"></img></a>`;
+            const image = `<a href="${results.openGraph.image.url}" target="_blank" rel="noopener"><img src="${results.openGraph.image.url}" class="card-img-top img-fluid" /></a>`;
             return `
-                ${$('.gambar').html(image)}
+                ${$('.card').html(image)}
             `
         },
         error: (e) => {
@@ -166,7 +171,7 @@ function showRepoDetails(repodetail) {
         </ul>
     </div>
     <div class="modal-footer">
-        <a href="https://github.com/${repodetail.full_name}"><button type="button" class="btn btn-primary">See on GitHub <i class="fas fa-sign-in-alt"></i></button></a>
+        <a href="https://github.com/${repodetail.full_name}"><button type="button" class="btn btn-primary">See on <i class="ms-1 fab fa-github"></i></button></a>
     </div>`;
 }
 
